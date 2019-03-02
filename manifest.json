@@ -1,0 +1,13 @@
+{
+    "name": "Standout Info collection",
+    "version": "1.0",
+    "description": "Periodically prompts for information about how you feel about work.",
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },  
+     "page_action": {
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 2
+  }
