@@ -2,12 +2,14 @@
     "name": "Standout Info collection",
     "version": "1.0",
     "description": "Periodically prompts for information about how you feel about work.",
+    "permissions": ["storage"],
     "background": {
       "scripts": ["background.js"],
       "persistent": false
     },  
-     "page_action": {
+     "browser_action": {
       "default_popup": "popup.html"
     },
+    "options_page": "options.html",
     "manifest_version": 2
   }

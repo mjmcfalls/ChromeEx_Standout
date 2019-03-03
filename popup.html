@@ -1,15 +1,101 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
     <style>
-      button {
-        height: 30px;
-        width: 30px;
-        outline: none;
-      }
+        .fieldgroup{
+            float: left;
+            width: auto;
+            /* margin-left: 3em/; */
+            }
+
+            body {
+                min-width: 400px; /* your desired width */
+                /* max-width: 500px; */
+                /* min-height: 250px; */
+            }
     </style>
+    
   </head>
   <body>
-    <button id="changeColor"></button>
+    <div class="container">
+  <h5>How do you feel?</h5>
+  <p>&nbsp;</p>
+  <form action="#" id="form">
+        <div>
+            <h6>Value</h6>
+            <label>
+                <input name="value" type="radio" value=""/>
+                <span>0</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="1"/>
+                <span>1</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="2"/>
+                <span>2</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="3"/>
+                <span>3</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="4"/>
+                <span>4</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="5"/>
+                <span>5</span>
+            </label>
+            <label>
+                <input name="value" type="radio" value="6"/>
+                <span>6</span>
+            </label>
+        </div>
+        <p>&nbsp;</p>
+        <div>
+            <h6>Skill</h6>
+            <label>
+                <input name="skill" type="radio" value="0"/>
+                <span>0</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="1"/>
+                <span>1</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="2"/>
+                <span>2</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="3"/>
+                <span>3</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="4"/>
+                <span>4</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="5"/>
+                <span>5</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="6"/>
+                <span>6</span>
+            </label>
+        </div>
+        <p>&nbsp;</p>
+        <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="submitBtn" value="xx">Submit<i class="material-icons right">send</i>
+        </button>
+  </form>
+  
+      <p>&nbsp;</p>
+    </div>
   </body>
 </html>
