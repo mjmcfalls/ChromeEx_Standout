@@ -1,12 +1,12 @@
 function sendform(formData){
     var port = chrome.runtime.connect({name: "standout"});
-    port.postMessage({joke: "Knock knock"});
-    port.onMessage.addListener(function(msg) {
-    if (msg.question == "Who's there?")
-        port.postMessage({answer: "Madame"});
-    else if (msg.question == "Madame who?")
-        port.postMessage({answer: "Madame... Bovary"});
-    });
+    port.postMessage({form: formData});
+    // port.onMessage.addListener(function(msg) {
+    // if (msg.question == "Who's there?")
+    //     port.postMessage({answer: "Madame"});
+    // else if (msg.question == "Madame who?")
+    //     port.postMessage({answer: "Madame... Bovary"});
+    // });
     console.log(formData);
 
 };

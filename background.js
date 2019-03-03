@@ -11,18 +11,22 @@
 
 
 // });
-chrome.runtime.onMessage.addListener( function(request,sender,sendResponse)
-{
-    if( request.greeting === "GetURL" )
-    {
-        var tabURL = "Not set yet";
-        chrome.tabs.query({active:true},function(tabs){
-            if(tabs.length === 0) {
-                sendResponse({});
-                return;
-            }
-            tabURL = tabs[0].url;
-            sendResponse( {navURL:tabURL} );
-        });        
-    }
-}
+chrome.runtime.onConnect.addListener(function(port) {
+    console.assert(port.name == "standout");
+    console.log(port.name);
+    // console.log(port);
+    port.onMessage.addListener(function(msg) {
+        if(msg.form){
+            console.log(msg)
+            console.log("Value: " + msg.form[0].value)
+            console.log("Skill: " + msg.form[1].value)
+        }
+        
+    //   if (msg.joke == "Knock knock")
+    //     port.postMessage({question: "Who's there?"});
+    //   else if (msg.answer == "Madame")
+    //     port.postMessage({question: "Madame who?"});
+    //   else if (msg.answer == "Madame... Bovary")
+    //     port.postMessage({question: "I don't get it."});
+    });
+  });
