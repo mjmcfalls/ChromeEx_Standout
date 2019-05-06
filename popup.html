@@ -28,41 +28,35 @@
   <p>&nbsp;</p>
   <form action="#" id="form">
         <div>
-            <h6>Value</h6>
-            <label>
-                <input name="value" type="radio" value=""/>
-                <span>0</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="1"/>
-                <span>1</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="2"/>
-                <span>2</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="3"/>
-                <span>3</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="4"/>
-                <span>4</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="5"/>
-                <span>5</span>
-            </label>
-            <label>
-                <input name="value" type="radio" value="6"/>
-                <span>6</span>
-            </label>
+            <h6>Add Value</h6>
+                <label><input name="value" id="value-2" type="radio" value="-2"/>
+                    <span>-2</span></label>
+                
+                <label><input name="value" id="value-1" type="radio" value="-1"/>
+                    <span>-1</span></label>
+                 
+                <label><input name="value" id="value0" type="radio" value="0" checked />
+                    <span>0</span></label>
+                
+                <label><input name="value" id="value1" type="radio" value="1"/>
+                    <span>1</span></label>
+                
+                <label><input name="value" id="value2" type="radio" value="2"/>
+                    <span>2</span></label>
+                
         </div>
         <p>&nbsp;</p>
         <div>
-            <h6>Skill</h6>
+            <h6>use Skills</h6>
             <label>
-                <input name="skill" type="radio" value="0"/>
+                <input name="skill" type="radio" value="-2"/>
+                <span>-2</span>
+            </label>
+            <label>
+                <input name="skill" type="radio" value="-1"/>
+                <span>-1</span>
+            <label>
+                <input name="skill" type="radio" value="0" checked />
                 <span>0</span>
             </label>
             <label>
@@ -73,26 +67,20 @@
                 <input name="skill" type="radio" value="2"/>
                 <span>2</span>
             </label>
-            <label>
-                <input name="skill" type="radio" value="3"/>
-                <span>3</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="4"/>
-                <span>4</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="5"/>
-                <span>5</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="6"/>
-                <span>6</span>
-            </label>
         </div>
         <p>&nbsp;</p>
+        <div class="input-field col s12">
+                <textarea id="loved_act" name="loved_act" class="materialize-textarea"></textarea>
+                <label for="loved_act">Activities Loved?</label>
+        </div>
+        <div class="input-field col s12">
+                <textarea id="loathed_act" name="loathed_act" class="materialize-textarea"></textarea>
+                <label for="loathed_act">Activities Loathed?</label>
+              </div>
         <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="submitBtn" value="xx">Submit<i class="material-icons right">send</i>
         </button>
+        <!-- <textarea name="loved_act" rows="10" cols="100" wrap="soft" placeholder="Activities loved?"></textarea> -->
+        <!-- <textarea name="loathed_act" rows="10" cols="100" wrap="soft" placeholder="Activities loathed?"></textarea> -->
   </form>
   
       <p>&nbsp;</p>

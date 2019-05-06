@@ -20,6 +20,8 @@ chrome.runtime.onConnect.addListener(function(port) {
             console.log(msg)
             console.log("Value: " + msg.form[0].value)
             console.log("Skill: " + msg.form[1].value)
+            console.log("Loved: " + msg.form[2].value)
+            console.log("Loathed: " + msg.form[3].value)
         }
         
     //   if (msg.joke == "Knock knock")
