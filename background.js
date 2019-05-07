@@ -32,28 +32,37 @@ chrome.runtime.onConnect.addListener(function (port) {
             // console.log("Loved: " + msg.form[2].value)
             // console.log("Loathed: " + msg.form[3].value)
 
-            // var PreppedData = JSON.stringify(data)
+            var PreppedData = JSON.stringify(data)
             console.log(data);
 
             chrome.storage.sync.get(DateString, function (result) {
                 console.log(result)
-                if (result) {
-                    console.log('Value currently is ' + result);
-                    result[DateString].push(data)
-                    chrome.storage.sync.set(result, function () {
-                        console.log('Value is set to ' + result);
-                    });
-                } else {
+                if (result[DateString] === undefined) {
                     tempJson = {}
                     tempJson[DateString] = data;
                     console.log('Setting: ' + DateString);
                     chrome.storage.sync.set(tempJson, function () {
-                        console.log('Value is set to ' + PreppedData);
+                        // console.log('Added ' + tempJson);
+                    });
+
+                } else {
+                    // console.log('Value currently is ' + result);
+                    result[DateString].push(data[0])
+                    chrome.storage.sync.set(result, function () {
+                        // console.log('Appending' + data);
                     });
                 }
 
             });
         }
+
+        // chrome.storage.local.clear(function () {
+        //     var error = chrome.runtime.lastError;
+        //     if (error) {
+        //         console.error(error);
+        //     }
+        // });
+
 
         //   if (msg.joke == "Knock knock")
         //     port.postMessage({question: "Who's there?"});
@@ -63,3 +72,5 @@ chrome.runtime.onConnect.addListener(function (port) {
         //     port.postMessage({question: "I don't get it."});
     });
 });
+
+
