@@ -17,5 +17,6 @@ $(document).ready(function(){
             // console.log( "Handler for .submit() called." );
             event.preventDefault();
             sendform($('#form').serializeArray());
+            window.close();
         });
   });
