@@ -19,7 +19,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         if (msg.form) {
             var currentDate = new Date();
             var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
-            console.log(DateString);
+            // console.log(DateString);
             var data = [{
                 name: "timestamp",
                 timestamp: Math.floor(Date.now() / 1000),
@@ -31,16 +31,14 @@ chrome.runtime.onConnect.addListener(function (port) {
             // console.log("Skill: " + msg.form[1].value)
             // console.log("Loved: " + msg.form[2].value)
             // console.log("Loathed: " + msg.form[3].value)
-
-            var PreppedData = JSON.stringify(data)
-            console.log(data);
+            // console.log(data);
 
             chrome.storage.sync.get(DateString, function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result[DateString] === undefined) {
                     tempJson = {}
                     tempJson[DateString] = data;
-                    console.log('Setting: ' + DateString);
+                    // console.log('Setting: ' + DateString);
                     chrome.storage.sync.set(tempJson, function () {
                         // console.log('Added ' + tempJson);
                     });
@@ -55,21 +53,6 @@ chrome.runtime.onConnect.addListener(function (port) {
 
             });
         }
-
-        // chrome.storage.local.clear(function () {
-        //     var error = chrome.runtime.lastError;
-        //     if (error) {
-        //         console.error(error);
-        //     }
-        // });
-
-
-        //   if (msg.joke == "Knock knock")
-        //     port.postMessage({question: "Who's there?"});
-        //   else if (msg.answer == "Madame")
-        //     port.postMessage({question: "Madame who?"});
-        //   else if (msg.answer == "Madame... Bovary")
-        //     port.postMessage({question: "I don't get it."});
     });
 });
 
