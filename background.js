@@ -53,7 +53,7 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         console.log(tabs[0]);
         // chrome.tabs.sendMessage(tabs[0].id, { action: "show" }, function (response) { });
-        if (tabs[0].id) {
+        if (!tabs[0].id === undefined) {
             var port = chrome.tabs.connect(tabs[0].id, { name: "standout" });
             port.postMessage({ action: "show" });
         }
