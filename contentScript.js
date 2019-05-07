@@ -16,7 +16,9 @@ chrome.runtime.onConnect.addListener(function (port) {
             console.log("Action:show");
             // alert(msg.action);
             var port = chrome.runtime.connect({ name: "standout" });
-            port.postMessage({ "20190507": "Who's there?" });
+            var currentDate = new Date();
+            var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
+            port.postMessage({ DateString: "Return from Content" });
         }
     });
 });
