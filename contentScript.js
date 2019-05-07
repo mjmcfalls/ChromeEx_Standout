@@ -18,7 +18,10 @@ chrome.runtime.onConnect.addListener(function (port) {
             var port = chrome.runtime.connect({ name: "standout" });
             var currentDate = new Date();
             var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
-            port.postMessage({ DateString: "Return from Content" });
+            tempJson = {}
+            var data = "Return from Content"
+            tempJson[DateString] = data;
+            port.postMessage(tempJson);
         }
     });
 });
