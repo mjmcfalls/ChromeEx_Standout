@@ -56,6 +56,5 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
         var port = chrome.tabs.connect(tabs[0].id, { name: "standout" });
         port.postMessage({ action: "show" });
     });
-
 });
 
