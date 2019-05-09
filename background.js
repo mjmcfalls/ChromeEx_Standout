@@ -1,6 +1,3 @@
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
 
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
