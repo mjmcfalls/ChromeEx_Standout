@@ -1,4 +1,5 @@
-
+var AppName = "standout";
+var AlarmInterval = 15;
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
     console.log(port.name);
@@ -46,7 +47,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 console.log("Setting alarm: periodInMinutes 1");
-chrome.alarms.create("standoutAlarm", { 'periodInMinutes': 1 });
+chrome.alarms.create("standoutAlarm", { 'periodInMinutes': AlarmInterval });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     console.log("Firing alarm", alarm);
