@@ -1,3 +1,6 @@
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
@@ -54,9 +57,31 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
         console.log(tabs[0]);
         // chrome.tabs.sendMessage(tabs[0].id, { action: "show" }, function (response) { });
         if (!(tabs[0].id === undefined)) {
-            var port = chrome.tabs.connect(tabs[0].id, { name: "standout" });
-            console.log("Posting message to " + tabs[0].title)
-            port.postMessage({ action: "show" });
+            // console.log(tabs[0]);
+            // var port = chrome.tabs.connect(tabs[0].id, { name: "standout" });
+            // console.log("Posting message to " + tabs[0].title)
+            // port.postMessage({ action: "show" });
+            // chrome.tabs.executeScript(tabs[0].id, {
+            //     file: 'test.js'
+            // });
+            chrome.windows.create({
+                type: 'popup',
+                url: 'popup.html',
+                width: 500,
+                height: 520,
+                // left: 5,
+                // top: 100,
+                focused: false
+            }, function (window) {
+                console.log("Create Window callback");
+                // chrome.windows.remove(tab.id);
+                setTimeout(function () {
+                    console.log(window);
+                    console.log("Closing Window");
+                    chrome.windows.remove(window.id);
+                }, 60000);
+
+            });
         }
     });
 });

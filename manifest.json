@@ -3,8 +3,8 @@
   "version": "1.0",
   "description": "Periodically prompts for information about how you feel about work.",
   "permissions": [
+    "activeTab",
     "storage",
-    "tabs",
     "alarms"
   ],
   "background": {
@@ -26,6 +26,9 @@
         "contentScript.js"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    "test.js"
   ],
   "manifest_version": 2
 }
