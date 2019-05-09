@@ -46,7 +46,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     });
 });
 
-console.log("Setting alarm: periodInMinutes 1");
+console.log("Setting alarm - periodInMinutes: " + AlarmInterval);
 chrome.alarms.create("standoutAlarm", { 'periodInMinutes': AlarmInterval });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
