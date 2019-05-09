@@ -1,5 +1,23 @@
 var AppName = "standout";
-var AlarmInterval = 15;
+var AppOptions = String(AppName + "Opts");
+var options = { AlarmInterval: 15 };
+
+
+chrome.storage.sync.get(AppOptions, function (items) {
+    console.log(AppOptions);
+    console.log(items);
+
+    if (items[AppOptions].AlarmInterval) {
+        console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+        options.AlarmInterval = items.AlarmInterval;
+    }
+    else {
+        console.log("No custom alarm interval set.");
+        console.log("Default Alarm Interval: " + options.AlarmInterval);
+    }
+});
+
+
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
     console.log(port.name);
@@ -43,11 +61,25 @@ chrome.runtime.onConnect.addListener(function (port) {
 
             });
         }
+
+        if (msg.options) {
+            console.log("options");
+            console.log(msg);
+            // console.log(msg.options[0][name]);
+            TempOptions = {}
+            msg.options.forEach(function (option) {
+                console.log(option);
+                if (option.name == "AlarmInterval") {
+                    TempOptions[AppOptions] = { AlarmInterval: option.value };
+                }
+            });
+            console.log(TempOptions);
+            chrome.storage.sync.set(TempOptions, function (result) { });
+        }
     });
 });
-
-console.log("Setting alarm - periodInMinutes: " + AlarmInterval);
-chrome.alarms.create("standoutAlarm", { 'periodInMinutes': AlarmInterval });
+console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
+chrome.alarms.create("standoutAlarm", { 'periodInMinutes': options.AlarmInterval });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     console.log("Firing alarm", alarm);

@@ -1,6 +1,6 @@
 function sendform(formData) {
     var port = chrome.runtime.connect({ name: "standout" });
-    port.postMessage({ form: formData });
+    port.postMessage({ options: formData });
     // port.onMessage.addListener(function(msg) {
     // if (msg.question == "Who's there?")
     //     port.postMessage({answer: "Madame"});
@@ -8,7 +8,6 @@ function sendform(formData) {
     //     port.postMessage({answer: "Madame... Bovary"});
     // });
     console.log(formData);
-
 };
 
 $(document).ready(function () {
@@ -18,6 +17,6 @@ $(document).ready(function () {
         // console.log( "Handler for .submit() called." );
         event.preventDefault();
         sendform($('#form').serializeArray());
-        window.close();
+        // window.close();
     });
 });

@@ -1,17 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="popup.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
-    <style>
-    </style>
-    
-  </head>
-  <body>
-    <span>OPTIONS!</span>
-  </body>
+
+<head>
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script type="text/javascript" src="options.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+  <style>
+  </style>
+
+</head>
+
+<body>
+  <h5>OPTIONS!</h5>
+  <div class="container">
+    <h5>H5</h5>
+    <form action="#" id="form">
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field inline">
+            <input name="AlarmInterval" id="AlarmInterval" type="number" class="validate" value="60">
+            <label for=" AlarmInterval">Alarm Interval:</label>
+            <span class="helper-text" data-error="wrong">In Minutes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test input -->
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field inline">
+            <input name="TestInput" id="TestInput" type="number" class="validate" value="9999999">
+            <label for=" TestInput">Alarm Interval:</label>
+            <span class="helper-text" data-error="wrong">In Minutes</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="submitBtn" value="xx">
+        Submit
+        <i class="material-icons right">send</i>
+      </button>
+    </form>
+  </div>
+</body>
+
 </html>
