@@ -8,13 +8,18 @@ chrome.storage.sync.get(AppOptions, function (items) {
     console.log(items);
 
     if (items[AppOptions].AlarmInterval) {
-        console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-        options.AlarmInterval = items.AlarmInterval;
+        // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+        options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+        console.log("Setting custom alarm interval: " + options.AlarmInterval);
+        // console.log(typeof (options.AlarmInterval));
     }
     else {
         console.log("No custom alarm interval set.");
         console.log("Default Alarm Interval: " + options.AlarmInterval);
     }
+
+    console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
+    chrome.alarms.create(AppName, { 'periodInMinutes': options.AlarmInterval });
 });
 
 
@@ -65,21 +70,23 @@ chrome.runtime.onConnect.addListener(function (port) {
         if (msg.options) {
             console.log("options");
             console.log(msg);
-            // console.log(msg.options[0][name]);
-            TempOptions = {}
-            msg.options.forEach(function (option) {
-                console.log(option);
-                if (option.name == "AlarmInterval") {
-                    TempOptions[AppOptions] = { AlarmInterval: option.value };
-                }
+            chrome.alarms.clear(AppName, function (wasCleared) {
+                console.log("Cleared alarm:" + AppName + " : " + wasCleared);
             });
-            console.log(TempOptions);
-            chrome.storage.sync.set(TempOptions, function (result) { });
+            chrome.storage.sync.get(AppOptions, function (items) {
+                if (items[AppOptions].AlarmInterval) {
+                    options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+                    // console.log("Getting new alarm interval: " + options.AlarmInterval);
+                }
+                else {
+                    // console.log("Default Alarm Interval: " + options.AlarmInterval);
+                }
+                console.log("Setting new alarm - periodInMinutes: " + options.AlarmInterval);
+                chrome.alarms.create(AppName, { 'periodInMinutes': options.AlarmInterval });
+            });
         }
     });
 });
-console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
-chrome.alarms.create("standoutAlarm", { 'periodInMinutes': options.AlarmInterval });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     console.log("Firing alarm", alarm);
