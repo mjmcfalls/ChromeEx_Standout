@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="popup.js"></script>
@@ -8,82 +9,101 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
     <style>
-        .fieldgroup{
+        .fieldgroup {
             float: left;
             width: auto;
             /* margin-left: 3em/; */
-            }
+        }
 
-            body {
-                min-width: 400px; /* your desired width */
-                /* max-width: 500px; */
-                /* min-height: 250px; */
-            }
+        body {
+            min-width: 400px;
+            /* your desired width */
+            /* max-width: 500px; */
+            /* min-height: 250px; */
+        }
     </style>
-    
-  </head>
-  <body>
+
+</head>
+
+<body>
     <div class="container">
-  <h5>How do you feel?</h5>
-  <p>&nbsp;</p>
-  <form action="#" id="form">
-        <div>
-            <h6>Add Value</h6>
-                <label><input name="value" id="value-2" type="radio" value="-2"/>
-                    <span>-2</span></label>
-                
-                <label><input name="value" id="value-1" type="radio" value="-1"/>
-                    <span>-1</span></label>
-                 
-                <label><input name="value" id="value0" type="radio" value="0" checked />
-                    <span>0</span></label>
-                
-                <label><input name="value" id="value1" type="radio" value="1"/>
-                    <span>1</span></label>
-                
-                <label><input name="value" id="value2" type="radio" value="2"/>
-                    <span>2</span></label>
-                
-        </div>
-        <p>&nbsp;</p>
-        <div>
-            <h6>use Skills</h6>
-            <label>
-                <input name="skill" type="radio" value="-2"/>
-                <span>-2</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="-1"/>
-                <span>-1</span>
-            <label>
-                <input name="skill" type="radio" value="0" checked />
-                <span>0</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="1"/>
-                <span>1</span>
-            </label>
-            <label>
-                <input name="skill" type="radio" value="2"/>
-                <span>2</span>
-            </label>
-        </div>
-        <p>&nbsp;</p>
-        <div class="input-field col s12">
+        <h5>H5</h5>
+        <form action="#" id="form">
+            <table class="none">
+                <thead>
+                    <tr>
+                        <td>Col1</td>
+                        <td>Col2</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p><label>
+                                    <input name="value1" type="radio" value="-2" />
+                                    <span>-2</span>
+                                </label></p>
+                            <p><label><input name="value1" type="radio" value="-1" />
+                                    <span>-1</span>
+                                </label></p>
+                            <p><label><input name="value1" type="radio" value="0" selected />
+                                    <span>0</span>
+                                </label></p>
+                            <p><label>
+                                    <input name="value1" type="radio" value="1" />
+                                    <span>1</span>
+                                </label></p>
+                            <p><label><input name="value1" type="radio" value="2" />
+                                    <span>2</span>
+                                </label></p>
+
+                        </td>
+                        <td>
+                            <p><label>
+                                    <input name="skill1" type="radio" value="-2" />
+                                    <span>-2</span>
+                                </label></p>
+                            <p><label>
+                                    <input name="skill1" type="radio" value="-1" />
+                                    <span>-1</span>
+                                </label></p>
+                            <p><label>
+                                    <input name="skill1" type="radio" value="0" selected />
+                                    <span>0</span>
+                                </label></p>
+                            <p><label>
+                                    <input name="skill1" type="radio" value="1" />
+                                    <span>1</span>
+                                </label></p>
+                            <p><label>
+                                    <input name="skill1" type="radio" value="2" />
+                                    <span>2</span>
+                                </label></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="input-field col s4">
                 <textarea id="loved_act" name="loved_act" class="materialize-textarea"></textarea>
-                <label for="loved_act">Activities Loved?</label>
-        </div>
-        <div class="input-field col s12">
+                <label for="loved_act">Activities Loved</label>
+            </div>
+
+            <div class="input-field col s4">
                 <textarea id="loathed_act" name="loathed_act" class="materialize-textarea"></textarea>
-                <label for="loathed_act">Activities Loathed?</label>
-              </div>
-        <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="submitBtn" value="xx">Submit<i class="material-icons right">send</i>
-        </button>
-        <!-- <textarea name="loved_act" rows="10" cols="100" wrap="soft" placeholder="Activities loved?"></textarea> -->
-        <!-- <textarea name="loathed_act" rows="10" cols="100" wrap="soft" placeholder="Activities loathed?"></textarea> -->
-  </form>
-  
-      <p>&nbsp;</p>
+                <label for="loathed_act">Activities Loathed</label>
+            </div>
+
+            <div class="input-field col s4">
+                <textarea id="notes" name="notes" class="materialize-textarea"></textarea>
+                <label for="notes">Notes</label>
+            </div>
+            <button class="btn waves-effect waves-light btn-small" type="submit" name="action" id="submitBtn"
+                value="xx">Submit<i class="material-icons right">send</i>
+            </button>
+        </form>
+
+        <p>&nbsp;</p>
     </div>
-  </body>
+</body>
+
 </html>

@@ -68,7 +68,7 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                 type: 'popup',
                 url: 'popup.html',
                 width: 500,
-                height: 520,
+                height: 650,
                 // left: 5,
                 // top: 100,
                 focused: false
