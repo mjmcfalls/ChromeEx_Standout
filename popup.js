@@ -1,19 +1,19 @@
 function sendform(formData) {
+    console.log(formData);
     var port = chrome.runtime.connect({ name: "standout" });
     port.postMessage({ form: formData });
-    // port.onMessage.addListener(function(msg) {
-    // if (msg.question == "Who's there?")
-    //     port.postMessage({answer: "Madame"});
-    // else if (msg.question == "Madame who?")
-    //     port.postMessage({answer: "Madame... Bovary"});
-    // });
-    console.log(formData);
-
 };
 
 $(document).ready(function () {
-    // $('select').formSelect();
-    // console.log("Document ready!");
+    var currentDate = new Date();
+    var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
+    // // console.log(DateString);
+    // var data = [{
+    //     name: "timestamp",
+    $('#timestamp').val(Math.floor(Date.now() / 1000));
+    $('#datedid').val(DateString);
+    //     data: msg.form
+    // }]
     $("#form").submit(function (event) {
         // console.log( "Handler for .submit() called." );
         event.preventDefault();
