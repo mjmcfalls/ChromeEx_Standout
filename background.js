@@ -25,46 +25,39 @@ chrome.storage.sync.get(AppOptions, function (items) {
 
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
+    var DateString;
     console.log(port.name);
     console.log(port);
     port.onMessage.addListener(function (msg) {
         console.log(msg);
         if (msg.form) {
-            // var currentDate = new Date();
-            // var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
-            // // console.log(DateString);
-            // var data = [{
-            //     name: "timestamp",
-            //     timestamp: Math.floor(Date.now() / 1000),
-            //     data: msg.form
-            // }]
-            // console.log(currentDate.toLocaleFormat('%Y%m%d'));
-            // console.log(msg)
-            // console.log("Value: " + msg.form[0].value)
-            // console.log("Skill: " + msg.form[1].value)
-            // console.log("Loved: " + msg.form[2].value)
-            // console.log("Loathed: " + msg.form[3].value)
-            // console.log(data);
+            var data = {};
+            msg.form.forEach(function (item) {
+                if (item.name == "dateid") {
+                    DateString = item.value;
+                }
+                else {
+                    data[item.name] = item.value;
+                }
+            });
+            chrome.storage.sync.get(DateString, function (result) {
+                console.log(result)
+                if (result[DateString] === undefined) {
+                    tempJson = {}
+                    tempJson[DateString] = data;
+                    // console.log('Setting: ' + DateString);
+                    chrome.storage.sync.set(tempJson, function () {
+                        // console.log('Added ' + tempJson);
+                    });
 
-            // chrome.storage.sync.get(DateString, function (result) {
-            //     console.log(result)
-            //     if (result[DateString] === undefined) {
-            //         tempJson = {}
-            //         tempJson[DateString] = data;
-            //         // console.log('Setting: ' + DateString);
-            //         chrome.storage.sync.set(tempJson, function () {
-            //             // console.log('Added ' + tempJson);
-            //         });
-
-            //     } else {
-            //         // console.log('Value currently is ' + result);
-            //         result[DateString].push(data[0])
-            //         chrome.storage.sync.set(result, function () {
-            //             // console.log('Appending' + data);
-            //         });
-            //     }
-
-            // });
+                } else {
+                    // console.log('Value currently is ' + result);
+                    result[DateString].push(data)
+                    chrome.storage.sync.set(result, function () {
+                        // console.log('Appending' + data);
+                    });
+                }
+            });
         }
 
         if (msg.options) {
