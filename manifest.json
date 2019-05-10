@@ -9,7 +9,7 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "js/background.js"
     ],
     "persistent": false
   },
@@ -23,12 +23,9 @@
         "<all_urls>"
       ],
       "js": [
-        "contentScript.js"
+        "js/contentScript.js"
       ]
     }
-  ],
-  "web_accessible_resources": [
-    "test.js"
   ],
   "manifest_version": 2
 }
