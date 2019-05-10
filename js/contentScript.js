@@ -24,5 +24,42 @@
 //         }
 //     });
 // });
-
+var engageTestValue = 2;
 console.log("Content script loaded");
+function setUserValues(className) {
+    var n = document.getElementsByClassName("modalHeaderText");
+
+    console.log(n);
+    console.log(n[0]);
+    n[0].innerText = "Test Insert";
+    // var erating = document.getElementsByClassName("cirating engagementrating");
+    // console.log(erating);
+    // var vrating = document.getElementsByClassName("cirating valuerating");
+
+    // console.log(vrating);
+}
+var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        if (!mutation.addedNodes) return
+
+        for (var i = 0; i < mutation.addedNodes.length; i++) {
+            // do things to your newly added nodes here
+            var node = mutation.addedNodes[i]
+            if (node.className == "modalPageContainer") {
+                // console.log(node)
+                setUserValues(node.className);
+            }
+            ;
+        }
+    })
+})
+
+observer.observe(document.body, {
+    childList: true
+    , subtree: true
+    , attributes: false
+    , characterData: false
+})
+
+// stop watching using:
+// observer.disconnect()

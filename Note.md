@@ -7,3 +7,7 @@ Data format:
 
 
 Get items saved in sync storage: chrome.storage.sync.get(function(result){console.log(result)})
+
+
+class="modalPageContainer"
+id="rating-page"
