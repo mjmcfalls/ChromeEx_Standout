@@ -4,9 +4,8 @@ var options = { AlarmInterval: 15 };
 var PopupTimeout = 60000 * 5;
 
 chrome.storage.sync.get(AppOptions, function (items) {
-    console.log(AppOptions);
-    console.log(items);
-
+    // console.log(AppOptions);
+    // console.log(items);
     if (items[AppOptions].AlarmInterval) {
         // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
         options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
