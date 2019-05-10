@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "https://standout.tmbc.com/myteam/myteamconsole"
       ],
       "js": [
         "js/contentScript.js"

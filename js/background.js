@@ -4,13 +4,15 @@ var options = { AlarmInterval: 15 };
 var PopupTimeout = 60000 * 5;
 
 chrome.storage.sync.get(AppOptions, function (items) {
-    // console.log(AppOptions);
-    // console.log(items);
-    if (items[AppOptions].AlarmInterval) {
-        // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-        options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
-        console.log("Setting custom alarm interval: " + options.AlarmInterval);
-        // console.log(typeof (options.AlarmInterval));
+    console.log(AppOptions);
+    console.log(items);
+    if (items[AppOptions]) {
+        if (items[AppOptions].AlarmInterval) {
+            // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+            options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+            console.log("Setting custom alarm interval: " + options.AlarmInterval);
+            // console.log(typeof (options.AlarmInterval));
+        }
     }
     else {
         console.log("No custom alarm interval set.");
@@ -29,6 +31,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     console.log(port);
     port.onMessage.addListener(function (msg) {
         console.log(msg);
+        var DataArray = [];
         if (msg.form) {
             var data = {};
             msg.form.forEach(function (item) {
@@ -39,11 +42,12 @@ chrome.runtime.onConnect.addListener(function (port) {
                     data[item.name] = item.value;
                 }
             });
+            DataArray.push(data);
             chrome.storage.sync.get(DateString, function (result) {
                 console.log(result)
                 if (result[DateString] === undefined) {
                     tempJson = {}
-                    tempJson[DateString] = data;
+                    tempJson[DateString] = DataArray;
                     // console.log('Setting: ' + DateString);
                     chrome.storage.sync.set(tempJson, function () {
                         // console.log('Added ' + tempJson);
@@ -76,6 +80,10 @@ chrome.runtime.onConnect.addListener(function (port) {
                 console.log("Setting new alarm - periodInMinutes: " + options.AlarmInterval);
                 chrome.alarms.create(AppName, { 'periodInMinutes': options.AlarmInterval });
             });
+        }
+
+        if (msg.request) {
+            console.log("requesting data");
         }
     });
 });

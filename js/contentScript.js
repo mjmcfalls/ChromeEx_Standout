@@ -7,7 +7,6 @@
 // //         // if (request.greeting == "hello")
 // //         //     sendResponse({ farewell: "goodbye" });
 // //     });
-// console.log("Content script loaded");
 
 // chrome.runtime.onConnect.addListener(function (port) {
 //     console.assert(port.name == "standout");
@@ -25,3 +24,5 @@
 //         }
 //     });
 // });
+
+console.log("Content script loaded");
