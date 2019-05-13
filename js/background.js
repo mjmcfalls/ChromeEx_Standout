@@ -64,8 +64,8 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
 
         if (msg.options) {
-            console.log("options");
-            console.log(msg);
+            // console.log("options");
+            // console.log(msg);
             chrome.alarms.clear(AppName, function (wasCleared) {
                 console.log("Cleared alarm:" + AppName + " : " + wasCleared);
             });
