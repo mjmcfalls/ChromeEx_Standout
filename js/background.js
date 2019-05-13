@@ -70,7 +70,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                 } else {
                     // Append data to the existing day.
                     console.log("Appending data to existing results.");
-                    var avg;
+
                     var SkillSum = 0;
                     var ValueSum = 0;
                     var AvgIndex;
