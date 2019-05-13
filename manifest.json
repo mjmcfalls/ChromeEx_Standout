@@ -9,7 +9,8 @@
   ],
   "background": {
     "scripts": [
-      "js/background.js"
+      "js/background.js",
+      "js/moment.js"
     ],
     "persistent": false
   },
@@ -20,10 +21,11 @@
   "content_scripts": [
     {
       "matches": [
-        "https://standout.tmbc.com/myteam/myteamconsole"
+        "https://standout.tmbc.com/myteam/myteamconsole",
+        "file:///C:/Users/tecmmx/Desktop/code/ChromeExt_standout/dash.html"
       ],
       "js": [
-        "js/contentScript.js"
+        "js/contentScript_test.js"
       ]
     }
   ],

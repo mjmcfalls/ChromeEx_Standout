@@ -5,6 +5,13 @@ var options = {
 };
 var PopupTimeout = 60000 * 5;
 
+function createAveragesForDay(DataArr) {
+    for (i = 0; i < DataArr.length; i++) {
+        console.log(DataArr[i]);
+    }
+
+};
+
 chrome.storage.sync.get(AppOptions, function (items) {
     console.log(AppOptions);
     console.log(items);
@@ -48,18 +55,47 @@ chrome.runtime.onConnect.addListener(function (port) {
             chrome.storage.sync.get(DateString, function (result) {
                 console.log(result)
                 if (result[DateString] === undefined) {
+                    // Create new array in Chrome sync for the current day
                     tempJson = {}
+                    avg = { 'skillavg': DataArray[0]['skill'], 'valueavg': DataArray[0]['value'] };
                     tempJson[DateString] = DataArray;
-                    // console.log('Setting: ' + DateString);
+                    tempJson[DateString].push(avg);
+                    console.log(tempJson);
+
+
                     chrome.storage.sync.set(tempJson, function () {
                         // console.log('Added ' + tempJson);
                     });
 
                 } else {
-                    // console.log('Value currently is ' + result);
-                    result[DateString].push(data)
+                    // Append data to the existing day.
+                    console.log("Appending data to existing results.");
+                    var avg;
+                    var SkillSum = 0;
+                    var ValueSum = 0;
+                    var AvgIndex;
+
+                    result[DateString].push(data);
+
+                    for (i = 0; i < result[DateString].length; i++) {
+                        if (result[DateString][i]['skillavg']) {
+                            AvgIndex = i;
+                            console.log("Contains skillavg: " + i);
+                        }
+                        else {
+                            SkillSum = SkillSum + Number(result[DateString][i]['skill']);
+                            ValueSum = ValueSum + Number(result[DateString][i]['value']);
+                        }
+                    }
+
+                    console.log((result[DateString].length - 1));
+                    SkillAvg = Math.round(SkillSum / (result[DateString].length - 1));
+                    ValueAvg = Math.round(ValueSum / (result[DateString].length - 1));
+                    avg = { 'skillavg': SkillAvg, 'valueavg': ValueAvg };
+
+                    result[DateString][AvgIndex] = avg;
                     chrome.storage.sync.set(result, function () {
-                        // console.log('Appending' + data);
+                        // console.log(result);
                     });
                 }
             });
@@ -85,7 +121,14 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
 
         if (msg.request) {
-            console.log("requesting data");
+
+            console.log("Requesting data from content script");
+            var StartOfWeek = moment().startOf('week').toDate();
+            var EndOfWeek = moment().endOf('week').toDate();
+            console.log("Start Of Week: " + StartOfWeek);
+            console.log("End Of Week: " + EndOfWeek);
+            chrome.storage.sync.get(function (result) { console.log(result) })
+
         }
     });
 });
