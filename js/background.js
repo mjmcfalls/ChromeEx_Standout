@@ -89,8 +89,8 @@ chrome.runtime.onConnect.addListener(function (port) {
                     }
 
                     console.log((result[DateString].length - 1));
-                    SkillAvg = Math.round(SkillSum / (result[DateString].length - 1));
-                    ValueAvg = Math.round(ValueSum / (result[DateString].length - 1));
+                    SkillAvg = SkillSum / (result[DateString].length - 1);
+                    ValueAvg = ValueSum / (result[DateString].length - 1);
                     avg = { 'skillavg': SkillAvg, 'valueavg': ValueAvg };
 
                     result[DateString][AvgIndex] = avg;
