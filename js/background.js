@@ -80,7 +80,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                     for (i = 0; i < result[DateString].length; i++) {
                         if (result[DateString][i]['skillavg']) {
                             AvgIndex = i;
-                            console.log("Contains skillavg: " + i);
+                            // console.log("Contains skillavg: " + i);
                         }
                         else {
                             SkillSum = SkillSum + Number(result[DateString][i]['skill']);
@@ -88,7 +88,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                         }
                     }
 
-                    console.log((result[DateString].length - 1));
+                    // console.log((result[DateString].length - 1));
                     SkillAvg = SkillSum / (result[DateString].length - 1);
                     ValueAvg = ValueSum / (result[DateString].length - 1);
                     avg = { 'skillavg': SkillAvg, 'valueavg': ValueAvg };
