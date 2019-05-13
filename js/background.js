@@ -1,6 +1,8 @@
 var AppName = "standout";
 var AppOptions = String(AppName + "Opts");
-var options = { AlarmInterval: 15 };
+var options = {
+    AlarmInterval: 60
+};
 var PopupTimeout = 60000 * 5;
 
 chrome.storage.sync.get(AppOptions, function (items) {
@@ -89,6 +91,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
+    // Check if between lunch time.
     console.log("Firing alarm", alarm);
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         console.log(tabs[0]);
@@ -123,4 +126,5 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
         }
     });
 });
+
 
