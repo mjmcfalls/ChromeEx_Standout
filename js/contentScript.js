@@ -35,7 +35,6 @@ function setUserValues(className) {
     // var erating = document.getElementsByClassName("cirating engagementrating");
     // console.log(erating);
     // var vrating = document.getElementsByClassName("cirating valuerating");
-
     // console.log(vrating);
 }
 var observer = new MutationObserver(function (mutations) {
