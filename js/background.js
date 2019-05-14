@@ -128,7 +128,6 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
 
         if (msg.request) {
-
             console.log("Requesting data from content script");
             var StartOfWeek = moment().startOf('week').toDate();
             var EndOfWeek = moment().endOf('week').toDate();
@@ -142,6 +141,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
+    console.log(alarm);
     if (AlarmId == alarm.name) {
         console.log("Firing alarm", alarm);
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
