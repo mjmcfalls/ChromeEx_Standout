@@ -25,7 +25,8 @@
         "file:///C:/Users/tecmmx/Desktop/code/ChromeExt_standout/dash.html"
       ],
       "js": [
-        "js/contentScript_test.js"
+        "js/contentScript_test.js",
+        "js/moment.js"
       ]
     }
   ],

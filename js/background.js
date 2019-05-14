@@ -132,21 +132,22 @@ chrome.runtime.onConnect.addListener(function (port) {
             console.log("End Of Week: " + EndOfWeek);
             chrome.storage.sync.get(function (result) {
                 // console.log(result);
-                console.log(typeof result);
+                // console.log(typeof result);
                 for (var key in result) {
-                    console.log("Key: " + key);
+                    // console.log("Key: " + key);
                     if (moment(key).isBetween(StartOfWeek, EndOfWeek)) {
                         // console.log(result[key]);
                         WeekArray[key] = result[key];
                     }
                 }
+                console.log(WeekArray);
+                console.log("Post back to content script");
+                var postData = {};
+                postData['data'] = WeekArray;
+                console.log(postData);
+                port.postMessage(postData);
             });
-            console.log(WeekArray);
-            console.log("Post back to content script");
-            var postData = {};
-            postData['data'] = WeekArray;
-            console.log(postData);
-            port.postMessage(postData);
+
         }
     });
 });
