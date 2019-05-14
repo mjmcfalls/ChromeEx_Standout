@@ -3,10 +3,12 @@ console.log("contentScript_test.js");
 chrome.runtime.onConnect.addListener(function (port) {
     console.assert(port.name == "standout");
     port.onMessage.addListener(function (msg) {
-        if (msg.action == "reply") {
-            console.log("Action:show");
+        console.log(msg);
+        if (msg.data == "data") {
+            console.log("Received data from background.js");
+            console.log(msg);
             // alert(msg.action);
-            var port = chrome.runtime.connect({ name: "standout" });
+            // var port = chrome.runtime.connect({ name: "standout" });
             // tempJson = { 'request': "data" }
             // port.postMessage(tempJson);
         }

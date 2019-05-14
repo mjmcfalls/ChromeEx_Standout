@@ -4,6 +4,7 @@ var options = {
     AlarmInterval: 60
 };
 var PopupTimeout = 60000 * 5;
+var WeekArray = {};
 
 function uuidv4() {
     //Function from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -13,12 +14,6 @@ function uuidv4() {
 }
 
 var AlarmId = uuidv4();
-// function createAveragesForDay(DataArr) {
-//     for (i = 0; i < DataArr.length; i++) {
-//         console.log(DataArr[i]);
-//     }
-
-// };
 
 chrome.storage.sync.get(AppOptions, function (items) {
     console.log(AppOptions);
@@ -129,13 +124,26 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
 
         if (msg.request) {
+
             console.log("Requesting data from content script");
-            var StartOfWeek = moment().startOf('week').toDate();
-            var EndOfWeek = moment().endOf('week').toDate();
+            var StartOfWeek = moment().startOf('week'); //.format("YYYYMMDD")
+            var EndOfWeek = moment().endOf('week');
             console.log("Start Of Week: " + StartOfWeek);
             console.log("End Of Week: " + EndOfWeek);
-            chrome.storage.sync.get(function (result) { console.log(result) })
-
+            chrome.storage.sync.get(function (result) {
+                // console.log(result);
+                console.log(typeof result);
+                for (var key in result) {
+                    console.log("Key: " + key);
+                    if (moment(key).isBetween(StartOfWeek, EndOfWeek)) {
+                        // console.log(result[key]);
+                        WeekArray[key] = result[key];
+                    }
+                }
+            });
+            console.log(WeekArray);
+            console.log("Post back to content script");
+            port.postMessage({ 'data': WeekArray });
         }
     });
 });
