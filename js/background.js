@@ -5,12 +5,19 @@ var options = {
 };
 var PopupTimeout = 60000 * 5;
 
-function createAveragesForDay(DataArr) {
-    for (i = 0; i < DataArr.length; i++) {
-        console.log(DataArr[i]);
-    }
+function uuidv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    )
+}
 
-};
+var AlarmId = uuidv4();
+// function createAveragesForDay(DataArr) {
+//     for (i = 0; i < DataArr.length; i++) {
+//         console.log(DataArr[i]);
+//     }
+
+// };
 
 chrome.storage.sync.get(AppOptions, function (items) {
     console.log(AppOptions);
@@ -29,7 +36,7 @@ chrome.storage.sync.get(AppOptions, function (items) {
     }
 
     console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
-    chrome.alarms.create(AppName, { 'periodInMinutes': options.AlarmInterval });
+    chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
 });
 
 
@@ -104,8 +111,8 @@ chrome.runtime.onConnect.addListener(function (port) {
         if (msg.options) {
             // console.log("options");
             // console.log(msg);
-            chrome.alarms.clear(AppName, function (wasCleared) {
-                console.log("Cleared alarm:" + AppName + " : " + wasCleared);
+            chrome.alarms.clear(AlarmId, function (wasCleared) {
+                console.log("Cleared alarm:" + AlarmId + " : " + wasCleared);
             });
             chrome.storage.sync.get(AppOptions, function (items) {
                 if (items[AppOptions].AlarmInterval) {
@@ -116,7 +123,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                     // console.log("Default Alarm Interval: " + options.AlarmInterval);
                 }
                 console.log("Setting new alarm - periodInMinutes: " + options.AlarmInterval);
-                chrome.alarms.create(AppName, { 'periodInMinutes': options.AlarmInterval });
+                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
             });
         }
 
@@ -134,40 +141,22 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
-    // Check if between lunch time.
-    console.log("Firing alarm", alarm);
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        console.log(tabs[0]);
-        // chrome.tabs.sendMessage(tabs[0].id, { action: "show" }, function (response) { });
-        if (!(tabs[0].id === undefined)) {
-            // console.log(tabs[0]);
-            // var port = chrome.tabs.connect(tabs[0].id, { name: "standout" });
-            // console.log("Posting message to " + tabs[0].title)
-            // port.postMessage({ action: "show" });
-            // chrome.tabs.executeScript(tabs[0].id, {
-            //     file: 'test.js'
-            // });
-            chrome.windows.create({
-                type: 'popup',
-                url: 'popup.html',
-                width: 500,
-                height: 650,
-                // left: 5,
-                // top: 100,
-                focused: false
-                // }, function (window) {
-                // console.log("Create Window callback - " + window.id);
-                // // chrome.windows.remove(tab.id);
-                // setTimeout(function () {
-                //     console.log(window);
-                //     console.log("Closing Window: " + window.id);
-
-                //     chrome.windows.remove(window.id);
-                // }, PopupTimeout);
-
-            });
-        }
-    });
+    // Check if existing alarm matches current alarm; if so fire popup.
+    if (AlarmId == alarm.name) {
+        console.log("Firing alarm", alarm);
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            console.log(tabs[0]);
+            if (!(tabs[0].id === undefined)) {
+                chrome.windows.create({
+                    type: 'popup',
+                    url: 'popup.html',
+                    width: 500,
+                    height: 650,
+                    focused: false
+                });
+            }
+        });
+    }
 });
 
 
