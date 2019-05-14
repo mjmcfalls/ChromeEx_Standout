@@ -143,7 +143,10 @@ chrome.runtime.onConnect.addListener(function (port) {
             });
             console.log(WeekArray);
             console.log("Post back to content script");
-            port.postMessage({ 'data': WeekArray });
+            var postData = {};
+            postData['data'] = WeekArray;
+            console.log(postData);
+            port.postMessage(postData);
         }
     });
 });
