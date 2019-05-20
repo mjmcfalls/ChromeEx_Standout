@@ -22,7 +22,8 @@
     {
       "matches": [
         "https://standout.tmbc.com/myteam/myteamconsole",
-        "file:///C:/Users/tecmmx/Desktop/code/ChromeExt_standout/dash.html"
+        "file:///C:/Users/tecmmx/Desktop/code/ChromeExt_standout/dash.html",
+        "file://*"
       ],
       "js": [
         "js/contentScript_test.js",

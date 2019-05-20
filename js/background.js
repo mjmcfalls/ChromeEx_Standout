@@ -125,9 +125,11 @@ chrome.runtime.onConnect.addListener(function (port) {
 
         if (msg.request) {
 
-            console.log("Requesting data from content script");
-            var StartOfWeek = moment().startOf('week'); //.format("YYYYMMDD")
-            var EndOfWeek = moment().endOf('week');
+            console.log("Content Script Requested Data - " + msg.request);
+            var avg = { "skillAvg": 0, "valueAvg": 0, "count": 0 };
+            var soSplitWeek = msg.request.split("-");
+            var StartOfWeek = moment(soSplitWeek[0].split(" ") + " " + moment().year(), "DD MMM YYYY")
+            var EndOfWeek = moment(soSplitWeek[1].split(" ") + "-" + moment().year(), "DD MMM YYYY")
             console.log("Start Of Week: " + StartOfWeek);
             console.log("End Of Week: " + EndOfWeek);
             chrome.storage.sync.get(function (result) {
@@ -138,8 +140,22 @@ chrome.runtime.onConnect.addListener(function (port) {
                     if (moment(key).isBetween(StartOfWeek, EndOfWeek)) {
                         // console.log(result[key]);
                         WeekArray[key] = result[key];
+                        console.log("CalcAvg function: " + key);
+
+                        for (i = 0; i < result[key].length; i++) {
+                            if (result[key][i]['skill'] && result[key][i]['value']) {
+                                avg['skillAvg'] += parseInt(result[key][i]['skill']);
+                                avg['valueAvg'] += parseInt(result[key][i]['value']);
+                                avg['count']++;
+                            }
+                        }
                     }
                 }
+                // console.log("Avg: " + avg["skillAvg"] + " " + avg["valueAvg"] + " " + avg['count']);
+                avg['skillAvg'] = Math.round(avg['skillAvg'] / avg['count']);
+                avg['valueAvg'] = Math.round(avg['valueAvg'] / avg['count']);
+                // console.log("Avg: " + avg["skillAvg"] + " " + avg["valueAvg"] + " " + avg['count']);
+                WeekArray['avg'] = avg;
                 console.log(WeekArray);
                 console.log("Post back to content script");
                 var postData = {};
