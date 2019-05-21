@@ -16,8 +16,8 @@ function uuidv4() {
 var AlarmId = uuidv4();
 
 chrome.storage.sync.get(AppOptions, function (items) {
-    console.log(AppOptions);
-    console.log(items);
+    // console.log(AppOptions);
+    // console.log(items);
     if (items[AppOptions]) {
         if (items[AppOptions].AlarmInterval) {
             // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
@@ -40,9 +40,9 @@ chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
     var DateString;
     console.log(port.name);
-    console.log(port);
+    // console.log(port);
     port.onMessage.addListener(function (msg) {
-        console.log(msg);
+        // console.log(msg);
         var DataArray = [];
         if (msg.form) {
             var data = {};
@@ -56,14 +56,14 @@ chrome.runtime.onConnect.addListener(function (port) {
             });
             DataArray.push(data);
             chrome.storage.sync.get(DateString, function (result) {
-                console.log(result)
+                // console.log(result)
                 if (result[DateString] === undefined) {
                     // Create new array in Chrome sync for the current day
                     tempJson = {}
                     avg = { 'skillavg': DataArray[0]['skill'], 'valueavg': DataArray[0]['value'] };
                     tempJson[DateString] = DataArray;
                     tempJson[DateString].push(avg);
-                    console.log(tempJson);
+                    // console.log(tempJson);
 
 
                     chrome.storage.sync.set(tempJson, function () {
@@ -72,7 +72,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
                 } else {
                     // Append data to the existing day.
-                    console.log("Appending data to existing results.");
+                    // console.log("Appending data to existing results.");
 
                     var SkillSum = 0;
                     var ValueSum = 0;
