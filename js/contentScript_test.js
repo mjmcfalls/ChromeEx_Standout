@@ -40,9 +40,9 @@ port.onMessage.addListener(function (msg) {
     if (msg.data) {
         console.log("Received data from background.js");
         console.log(msg);
-        var loathed = [];
-        var loved = [];
-        var notes = [];
+        var loathed = "";
+        var loved = "";
+        var notes = "";
         // var LoathedDiv = document.getElementById("loathedacts");
         var skillsNode = document.getElementsByClassName("cirating engagementrating");
         var valueNode = document.getElementsByClassName("cirating valuerating");
@@ -69,13 +69,15 @@ port.onMessage.addListener(function (msg) {
                     if ("timestamp" in msg.data[key][i]) {
                         // console.log(msg.data[key][i]["timestamp"]);
                         if (msg.data[key][i]["loathed_act"]) {
-                            loathed.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
+                            // loathed.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
+                            loathed += moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"] + "\n";
                         }
                         if (msg.data[key][i]["loved_act"]) {
-                            loved.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"]);
+                            // loved.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"]);
+                            loved += moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"] + "\n";
                         }
                         if (msg.data[key][i]["notes"]) {
-                            notes.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["notes"]);
+                            // notes.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["notes"]);
                         }
                     }
                 }
