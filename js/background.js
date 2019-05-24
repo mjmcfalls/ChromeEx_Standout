@@ -128,8 +128,9 @@ chrome.runtime.onConnect.addListener(function (port) {
             console.log("Content Script Requested Data - " + msg.request);
             var avg = { "skillAvg": 0, "valueAvg": 0, "count": 0 };
             var soSplitWeek = msg.request.split("-");
-            var StartOfWeek = moment(soSplitWeek[0].split(" ") + " " + moment().year(), "DD MMM YYYY")
-            var EndOfWeek = moment(soSplitWeek[1].split(" ") + "-" + moment().year(), "DD MMM YYYY")
+            console.log(soSplitWeek);
+            var StartOfWeek = moment(soSplitWeek[0], "DD MMM")
+            var EndOfWeek = moment(soSplitWeek[1], "DD MMM")
             console.log("Start Of Week: " + StartOfWeek);
             console.log("End Of Week: " + EndOfWeek);
             chrome.storage.sync.get(function (result) {
@@ -137,10 +138,12 @@ chrome.runtime.onConnect.addListener(function (port) {
                 // console.log(typeof result);
                 for (var key in result) {
                     // console.log("Key: " + key);
-                    if (moment(key).isBetween(StartOfWeek, EndOfWeek)) {
+                    var tempMoment = moment(key, "YYYYMMDD");
+                    console.log("TempMoment: " + tempMoment.format("YYYYMMMDD"));
+                    if (tempMoment.isBetween(StartOfWeek, EndOfWeek, null, '[]')) {
                         // console.log(result[key]);
                         WeekArray[key] = result[key];
-                        console.log("CalcAvg function: " + key);
+                        console.log(key + " between " + StartOfWeek.format("YYYYMMMDD") + " and " + EndOfWeek.format("YYYYMMDD"));
 
                         for (i = 0; i < result[key].length; i++) {
                             if (result[key][i]['skill'] && result[key][i]['value']) {
