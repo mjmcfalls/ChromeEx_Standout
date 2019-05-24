@@ -11,3 +11,8 @@ Get items saved in sync storage: chrome.storage.sync.get(function(result){consol
 Clear All alarms: chrome.alarms.clearAll(function(){ console.log("Cleared ALL Alarms!")});
 class="modalPageContainer"
 id="rating-page"
+
+
+.modal.checkin-wizard .nudge {
+    background-color: #ecffd1ba;
+}
