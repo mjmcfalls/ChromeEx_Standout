@@ -46,7 +46,6 @@ port.onMessage.addListener(function (msg) {
         // var LoathedDiv = document.getElementById("loathedacts");
         var skillsNode = document.getElementsByClassName("cirating engagementrating");
         var valueNode = document.getElementsByClassName("cirating valuerating");
-        var textFields = document.getElementsByClassName("input strText");
 
         console.log("Skill avg: " + msg.data['avg']['skillAvg']);
         for (i = 0; i < skillsNode.length; i++) {
@@ -63,38 +62,39 @@ port.onMessage.addListener(function (msg) {
             }
         }
 
-        // for (var key in msg.data) {
-        //     console.log(msg.data[key]);
-        //     if (msg.data[key].length > 0) {
-        //         for (i = 0; i < msg.data[key].length; i++) {
-        //             if ("timestamp" in msg.data[key][i]) {
-        //                 // console.log(msg.data[key][i]["timestamp"]);
-        //                 if (msg.data[key][i]["loathed_act"]) {
-        //                     loathed.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
-        //                 }
-        //                 if (msg.data[key][i]["loved_act"]) {
-        //                     loved.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
-        //                 }
-        //                 if (msg.data[key][i]["notes"]) {
-        //                     notes.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        for (var key in msg.data) {
+            // console.log(msg.data[key]);
+            if (msg.data[key].length > 0) {
+                for (i = 0; i < msg.data[key].length; i++) {
+                    if ("timestamp" in msg.data[key][i]) {
+                        // console.log(msg.data[key][i]["timestamp"]);
+                        if (msg.data[key][i]["loathed_act"]) {
+                            loathed.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
+                        }
+                        if (msg.data[key][i]["loved_act"]) {
+                            loved.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"]);
+                        }
+                        if (msg.data[key][i]["notes"]) {
+                            notes.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["notes"]);
+                        }
+                    }
+                }
+            }
+        }
 
+        var strText = document.getElementsByClassName("input strText");
+        if (strText) {
+            console.log("loved txt");
+            console.log(loved);
+            strText[0].value = loved;
+        }
 
-        // for (i = 0; i < textFields.length; i++) {
-        //     if (textFields[i].getAttribute("data-gaaction") == "love") {
-        //         console.log("loathed txt");
-        //         console.log(loathed);
-        //     }
-        //     else if (textFields[i].getAttribute("data-gaaction") == "loathe") {
-        //         console.log("loved txt");
-        //         console.log(loved);
-        //     }
-        // }
-
+        var weakText = document.getElementsByClassName("input weakText");
+        if (weakText) {
+            console.log("loathed txt");
+            console.log(loathed);
+            weakText[0].value = loathed;
+        }
 
         // alert(msg.action);
         // var port = chrome.runtime.connect({ name: "standout" });
