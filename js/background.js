@@ -139,11 +139,11 @@ chrome.runtime.onConnect.addListener(function (port) {
                 for (var key in result) {
                     // console.log("Key: " + key);
                     var tempMoment = moment(key, "YYYYMMDD");
-                    console.log("TempMoment: " + tempMoment.format("YYYYMMMDD"));
+                    // console.log("TempMoment: " + tempMoment.format("YYYYMMMDD"));
                     if (tempMoment.isBetween(StartOfWeek, EndOfWeek, null, '[]')) {
                         // console.log(result[key]);
                         WeekArray[key] = result[key];
-                        console.log(key + " between " + StartOfWeek.format("YYYYMMMDD") + " and " + EndOfWeek.format("YYYYMMDD"));
+                        // console.log(key + " between " + StartOfWeek.format("YYYYMMMDD") + " and " + EndOfWeek.format("YYYYMMDD"));
 
                         for (i = 0; i < result[key].length; i++) {
                             if (result[key][i]['skill'] && result[key][i]['value']) {
