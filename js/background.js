@@ -13,7 +13,8 @@ function uuidv4() {
     )
 }
 
-var AlarmId = uuidv4();
+// var AlarmId = uuidv4();
+var AlarmId = "e5a55050-8d9f-491b-8562-57ad06091766";
 
 chrome.storage.sync.get(AppOptions, function (items) {
     // console.log(AppOptions);
@@ -31,8 +32,20 @@ chrome.storage.sync.get(AppOptions, function (items) {
         console.log("Default Alarm Interval: " + options.AlarmInterval);
     }
 
-    console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
-    chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+    chrome.alarms.get("e5a55050-8d9f-491b-8562-57ad06091766", function (alarm) {
+        console.log(alarm);
+        if (alarm) {
+            var t = moment(alarm.scheduledTime);
+            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+            var titleObj = {};
+            titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+            chrome.browserAction.setTitle(titleObj);
+        } else {
+            console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
+            chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+        }
+    });
+
 });
 
 
@@ -173,11 +186,11 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
-    // console.log(alarm);
+    console.log(alarm);
     if (AlarmId == alarm.name) {
         // console.log("Firing alarm", alarm);
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            console.log(tabs[0]);
+            // console.log(tabs[0]);
             if (!(tabs[0].id === undefined)) {
                 chrome.windows.create({
                     type: 'popup',
@@ -188,6 +201,11 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                 });
             }
         });
+        var t = moment(alarm.scheduledTime);
+        console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+        var titleObj = {};
+        titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+        chrome.browserAction.setTitle(titleObj);
     }
 });
 
