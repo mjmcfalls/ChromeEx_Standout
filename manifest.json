@@ -21,9 +21,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://standout.tmbc.com/myteam/myteamconsole",
-        "file:///C:/Users/tecmmx/Desktop/code/ChromeExt_standout/dash.html",
-        "file://*"
+        "https://standout.tmbc.com/myteam/myteamconsole"
       ],
       "js": [
         "js/contentScript_test.js",
