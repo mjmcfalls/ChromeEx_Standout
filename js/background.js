@@ -220,6 +220,8 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
         console.log("Next Alarm at: " + t.add(1, 'h').format("YYYY-MM-DD HH:mm:ss"));
         var titleObj = {};
         titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + moment(alarm.scheduledTime).format("YYYY-MM-DD HH:mm:ss");
+        console.log("Setting browser action with: ");
+        console.log(titleObj);
         chrome.browserAction.setTitle(titleObj);
     }
 });

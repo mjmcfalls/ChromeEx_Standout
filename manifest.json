@@ -1,7 +1,7 @@
 {
-  "name": "Standout Info collection",
+  "name": "Standout Daily Check-in Extension",
   "version": "1.0",
-  "description": "Periodically prompts for information about how you feel about work.",
+  "description": "Periodically nudges for Standout check-ins at a set interval.",
   "permissions": [
     "activeTab",
     "storage",
