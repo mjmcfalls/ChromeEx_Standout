@@ -31,35 +31,7 @@ chrome.storage.sync.get(AppOptions, function (items) {
         console.log("No custom alarm interval set.");
         console.log("Default Alarm Interval: " + options.AlarmInterval);
     }
-
-    chrome.alarms.get(AlarmId, function (alarm) {
-        console.log(alarm);
-        if (alarm) {
-
-            var t = moment(alarm.scheduledTime);
-            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
-
-            if (t.isBefore(moment())) {
-                chrome.alarms.clear(AlarmId)
-                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
-                chrome.alarms.get(AlarmId, function (alarm) {
-                    var titleObj = {};
-                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
-                    chrome.browserAction.setTitle(titleObj);
-                });
-            }
-            else {
-                var titleObj = {};
-                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
-                chrome.browserAction.setTitle(titleObj);
-            }
-
-        } else {
-            console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
-            chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
-        }
-    });
-
+    updateBrowserAction(AlarmId);
 });
 
 
@@ -147,6 +119,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                 }
                 // console.log("Setting new alarm - periodInMinutes: " + options.AlarmInterval);
                 chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+                updateBrowserAction(AlarmId);
             });
         }
 
@@ -215,15 +188,36 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
                 });
             }
         });
-        var t = moment(alarm.scheduledTime);
-        console.log("Current Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
-        console.log("Next Alarm at: " + t.add(1, 'h').format("YYYY-MM-DD HH:mm:ss"));
-        var titleObj = {};
-        titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + moment(alarm.scheduledTime).format("YYYY-MM-DD HH:mm:ss");
-        console.log("Setting browser action with: ");
-        console.log(titleObj);
-        chrome.browserAction.setTitle(titleObj);
+        // Update Browser action with next alarm time.
+        updateBrowserAction(AlarmId);
+
     }
 });
 
+function updateBrowserAction(AlarmId) {
+    chrome.alarms.get(AlarmId, function (alarm) {
+        console.log(alarm);
+        if (alarm) {
+            var t = moment(alarm.scheduledTime);
+            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+            if (t.isBefore(moment())) {
+                chrome.alarms.clear(AlarmId)
+                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+                chrome.alarms.get(AlarmId, function (alarm) {
+                    var titleObj = {};
+                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
+                    chrome.browserAction.setTitle(titleObj);
+                });
+            }
+            else {
+                var titleObj = {};
+                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
+                chrome.browserAction.setTitle(titleObj);
+            }
 
+        } else {
+            console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
+            chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+        }
+    });
+}
