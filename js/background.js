@@ -32,14 +32,28 @@ chrome.storage.sync.get(AppOptions, function (items) {
         console.log("Default Alarm Interval: " + options.AlarmInterval);
     }
 
-    chrome.alarms.get("e5a55050-8d9f-491b-8562-57ad06091766", function (alarm) {
+    chrome.alarms.get(AlarmId, function (alarm) {
         console.log(alarm);
         if (alarm) {
+
             var t = moment(alarm.scheduledTime);
             console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
-            var titleObj = {};
-            titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
-            chrome.browserAction.setTitle(titleObj);
+
+            if (t.isBefore(moment())) {
+                chrome.alarms.clear(AlarmId)
+                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+                chrome.alarms.get(AlarmId, function (alarm) {
+                    var titleObj = {};
+                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+                    chrome.browserAction.setTitle(titleObj);
+                });
+            }
+            else {
+                var titleObj = {};
+                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+                chrome.browserAction.setTitle(titleObj);
+            }
+
         } else {
             console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
             chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
