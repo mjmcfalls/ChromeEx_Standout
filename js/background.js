@@ -44,13 +44,13 @@ chrome.storage.sync.get(AppOptions, function (items) {
                 chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
                 chrome.alarms.get(AlarmId, function (alarm) {
                     var titleObj = {};
-                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
                     chrome.browserAction.setTitle(titleObj);
                 });
             }
             else {
                 var titleObj = {};
-                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
                 chrome.browserAction.setTitle(titleObj);
             }
 
@@ -216,9 +216,10 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
             }
         });
         var t = moment(alarm.scheduledTime);
-        console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+        console.log("Current Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
+        console.log("Next Alarm at: " + t.add(1, 'h').format("YYYY-MM-DD HH:mm:ss"));
         var titleObj = {};
-        titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:SS");
+        titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + moment(alarm.scheduledTime).format("YYYY-MM-DD HH:mm:ss");
         chrome.browserAction.setTitle(titleObj);
     }
 });
