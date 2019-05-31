@@ -1,64 +1,109 @@
-// // chrome.runtime.onMessage.addListener(
-// //     function (request, sender, sendResponse) {
-// //         console.log(sender.tab ?
-// //             "from a content script:" + sender.tab.url :
-// //             "from the extension");
-// //         console.log(request);
-// //         // if (request.greeting == "hello")
-// //         //     sendResponse({ farewell: "goodbye" });
-// //     });
+console.log("contentScript_test.js");
+var valueColor = "#7b9bc8";
+var skillColor = "#a22024";
+var port = chrome.runtime.connect({ name: "standout" });
 
-// chrome.runtime.onConnect.addListener(function (port) {
-//     console.assert(port.name == "standout");
-//     port.onMessage.addListener(function (msg) {
-//         if (msg.action == "show") {
-//             console.log("Action:show");
-//             // alert(msg.action);
-//             var port = chrome.runtime.connect({ name: "standout" });
-//             var currentDate = new Date();
-//             var DateString = currentDate.getFullYear() + ('0' + (currentDate.getMonth() + 1)).slice(-2) + ('0' + currentDate.getDate()).slice(-2);
-//             tempJson = {}
-//             var data = "Return from Content"
-//             tempJson[DateString] = data;
-//             port.postMessage(tempJson);
-//         }
-//     });
-// });
-var engageTestValue = 2;
-console.log("Content script loaded");
-function setUserValues(className) {
-    var n = document.getElementsByClassName("modalHeaderText");
-
-    console.log(n);
-    console.log(n[0]);
-    n[0].innerText = "Test Insert";
-    // var erating = document.getElementsByClassName("cirating engagementrating");
-    // console.log(erating);
-    // var vrating = document.getElementsByClassName("cirating valuerating");
-    // console.log(vrating);
+function rafAsync() {
+    return new Promise(resolve => {
+        requestAnimationFrame(resolve); //faster than set time out
+    });
 }
-var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-        if (!mutation.addedNodes) return
 
-        for (var i = 0; i < mutation.addedNodes.length; i++) {
-            // do things to your newly added nodes here
-            var node = mutation.addedNodes[i]
-            if (node.className == "modalPageContainer") {
-                // console.log(node)
-                setUserValues(node.className);
+function checkElement(selector) {
+    if (document.querySelector(selector) === null) {
+        return rafAsync().then(() => checkElement(selector));
+    } else {
+        return Promise.resolve(true);
+    }
+}
+
+checkElement(".modal-prompt").then((element) => {
+    var element = document.createElement('style'), sheet;
+    var styles = ".modal.checkin-wizard .nudge { background-color: #ecffd1ba }"
+    // Append style element to head
+    document.head.appendChild(element);
+
+    // Reference to the stylesheet
+    sheet = element.sheet;
+    sheet.insertRule(styles, 0);
+    // console.info(element);
+    var modalTitle = document.getElementsByClassName("modal-prompt");
+    console.log("modal-prompt: " + modalTitle[0].innerHTML);
+
+    port.postMessage({ 'request': modalTitle[0].innerHTML });
+});
+
+
+// chrome.runtime.onMessage.addListener(function (port) {
+//     // console.assert(port.name == "standout");
+port.onMessage.addListener(function (msg) {
+    console.log(msg);
+    if (msg.data) {
+        console.log("Received data from background.js");
+        console.log(msg);
+        var loathed = "";
+        var loved = "";
+        var notes = "";
+        // var LoathedDiv = document.getElementById("loathedacts");
+        var skillsNode = document.getElementsByClassName("cirating engagementrating");
+        var valueNode = document.getElementsByClassName("cirating valuerating");
+
+        console.log("Skill avg: " + msg.data['avg']['skillAvg']);
+        for (i = 0; i < skillsNode.length; i++) {
+            if (msg.data['avg']['skillAvg'] == parseInt(skillsNode[i].getAttribute("data-rating"))) {
+                console.log("Skill matches attribute value");
+                skillsNode[i].style.borderColor = skillColor;
+                // border-bottom-color
             }
-            ;
         }
-    })
-})
 
-observer.observe(document.body, {
-    childList: true
-    , subtree: true
-    , attributes: false
-    , characterData: false
-})
+        for (i = 0; i < valueNode.length; i++) {
+            if (msg.data['avg']['valueAvg'] == parseInt(valueNode[i].getAttribute("data-rating"))) {
+                console.log("Value matches attribute value");
+                valueNode[i].style.borderBottomColor = valueColor;
+            }
+        }
 
-// stop watching using:
-// observer.disconnect()
+        for (var key in msg.data) {
+            // console.log(msg.data[key]);
+            if (msg.data[key].length > 0) {
+                for (i = 0; i < msg.data[key].length; i++) {
+                    if ("timestamp" in msg.data[key][i]) {
+                        // console.log(msg.data[key][i]["timestamp"]);
+                        if (msg.data[key][i]["loathed_act"]) {
+                            // loathed.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"]);
+                            loathed += moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loathed_act"] + "\n";
+                        }
+                        if (msg.data[key][i]["loved_act"]) {
+                            // loved.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"]);
+                            loved += moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["loved_act"] + "\n";
+                        }
+                        if (msg.data[key][i]["notes"]) {
+                            // notes.push(moment.unix(msg.data[key][i]["timestamp"]).format("YYYY-MM-DD") + " - " + msg.data[key][i]["notes"]);
+                        }
+                    }
+                }
+            }
+        }
+
+        var strText = document.getElementsByClassName("input strText");
+        if (strText) {
+            console.log("loved txt");
+            console.log(loved);
+            strText[0].value = loved;
+        }
+
+        var weakText = document.getElementsByClassName("input weakText");
+        if (weakText) {
+            console.log("loathed txt");
+            console.log(loathed);
+            weakText[0].value = loathed;
+        }
+
+        // alert(msg.action);
+        // var port = chrome.runtime.connect({ name: "standout" });
+        // tempJson = { 'request': "data" }
+        // port.postMessage(tempJson);
+    }
+});
+// });

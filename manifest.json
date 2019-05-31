@@ -24,7 +24,7 @@
         "https://standout.tmbc.com/myteam/myteamconsole"
       ],
       "js": [
-        "js/contentScript_test.js",
+        "js/contentScript.js",
         "js/moment.js"
       ]
     }
