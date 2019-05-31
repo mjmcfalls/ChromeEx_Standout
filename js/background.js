@@ -5,6 +5,7 @@ var options = {
 };
 var PopupTimeout = 60000 * 5;
 var WeekArray = {};
+var AlarmId = "e5a55050-8d9f-491b-8562-57ad06091766";
 
 function uuidv4() {
     //Function from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -14,25 +15,27 @@ function uuidv4() {
 }
 
 // var AlarmId = uuidv4();
-var AlarmId = "e5a55050-8d9f-491b-8562-57ad06091766";
 
-chrome.storage.sync.get(AppOptions, function (items) {
-    // console.log(AppOptions);
-    // console.log(items);
-    if (items[AppOptions]) {
-        if (items[AppOptions].AlarmInterval) {
-            // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-            options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
-            console.log("Setting custom alarm interval: " + options.AlarmInterval);
-            // console.log(typeof (options.AlarmInterval));
+chrome.runtime.onStartup(function () {
+    chrome.storage.sync.get(AppOptions, function (items) {
+        // console.log(AppOptions);
+        // console.log(items);
+        if (items[AppOptions]) {
+            if (items[AppOptions].AlarmInterval) {
+                // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+                options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+                console.log("Setting custom alarm interval: " + options.AlarmInterval);
+                // console.log(typeof (options.AlarmInterval));
+            }
         }
-    }
-    else {
-        console.log("No custom alarm interval set.");
-        console.log("Default Alarm Interval: " + options.AlarmInterval);
-    }
-    updateBrowserAction(AlarmId);
+        else {
+            console.log("No custom alarm interval set.");
+            console.log("Default Alarm Interval: " + options.AlarmInterval);
+        }
+        updateBrowserAction(AlarmId);
+    });
 });
+
 
 
 chrome.runtime.onConnect.addListener(function (port) {
