@@ -14,9 +14,37 @@ function uuidv4() {
     )
 }
 
+function updateBrowserAction(AlarmId) {
+    chrome.alarms.get(AlarmId, function (alarm) {
+        console.log(alarm);
+        if (alarm) {
+            var t = moment(alarm.scheduledTime);
+            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+            if (t.isBefore(moment())) {
+                chrome.alarms.clear(AlarmId)
+                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+                chrome.alarms.get(AlarmId, function (alarm) {
+                    var titleObj = {};
+                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
+                    chrome.browserAction.setTitle(titleObj);
+                });
+            }
+            else {
+                var titleObj = {};
+                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
+                chrome.browserAction.setTitle(titleObj);
+            }
+
+        } else {
+            console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
+            chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+        }
+    });
+}
+
 // var AlarmId = uuidv4();
 
-chrome.runtime.onStartup(function () {
+chrome.runtime.onStartup.addListener(function () {
     chrome.storage.sync.get(AppOptions, function (items) {
         // console.log(AppOptions);
         // console.log(items);
@@ -35,8 +63,6 @@ chrome.runtime.onStartup(function () {
         updateBrowserAction(AlarmId);
     });
 });
-
-
 
 chrome.runtime.onConnect.addListener(function (port) {
     // console.assert(port.name == "standout");
@@ -197,30 +223,20 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     }
 });
 
-function updateBrowserAction(AlarmId) {
-    chrome.alarms.get(AlarmId, function (alarm) {
-        console.log(alarm);
-        if (alarm) {
-            var t = moment(alarm.scheduledTime);
-            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
-            if (t.isBefore(moment())) {
-                chrome.alarms.clear(AlarmId)
-                chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
-                chrome.alarms.get(AlarmId, function (alarm) {
-                    var titleObj = {};
-                    titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
-                    chrome.browserAction.setTitle(titleObj);
-                });
-            }
-            else {
-                var titleObj = {};
-                titleObj['title'] = "Stand Daily Check-in\n" + "Next Check-in: " + t.format("YYYY-MM-DD HH:mm:ss");
-                chrome.browserAction.setTitle(titleObj);
-            }
-
-        } else {
-            console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
-            chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+chrome.storage.sync.get(AppOptions, function (items) {
+    // console.log(AppOptions);
+    // console.log(items);
+    if (items[AppOptions]) {
+        if (items[AppOptions].AlarmInterval) {
+            // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+            options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+            console.log("Setting custom alarm interval: " + options.AlarmInterval);
+            // console.log(typeof (options.AlarmInterval));
         }
-    });
-}
+    }
+    else {
+        console.log("No custom alarm interval set.");
+        console.log("Default Alarm Interval: " + options.AlarmInterval);
+    }
+    updateBrowserAction(AlarmId);
+});
