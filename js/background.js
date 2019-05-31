@@ -50,7 +50,24 @@ function updateBrowserAction(AlarmId) {
 chrome.runtime.onStartup.addListener(function () {
     // console.log("onStartup - Clear Alarm " + AlarmId);
     // chrome.alarms.clear(AlarmId);
-    updateBrowserAction(AlarmId);
+    // updateBrowserAction(AlarmId);
+    chrome.storage.sync.get(AppOptions, function (items) {
+        // console.log(AppOptions);
+        // console.log(items);
+        if (items[AppOptions]) {
+            if (items[AppOptions].AlarmInterval) {
+                // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+                options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+                console.log("Setting custom alarm interval: " + options.AlarmInterval);
+                // console.log(typeof (options.AlarmInterval));
+            }
+        }
+        else {
+            console.log("No custom alarm interval set.");
+            console.log("Default Alarm Interval: " + options.AlarmInterval);
+        }
+        updateBrowserAction(AlarmId);
+    });
 });
 
 chrome.runtime.onConnect.addListener(function (port) {
