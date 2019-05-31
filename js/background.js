@@ -7,19 +7,21 @@ var PopupTimeout = 60000 * 5;
 var WeekArray = {};
 var AlarmId = "e5a55050-8d9f-491b-8562-57ad06091766";
 
-function uuidv4() {
-    //Function from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
-}
+// function uuidv4() {
+//     //Function from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+//     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+//         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+//     )
+// }
 
 function updateBrowserAction(AlarmId) {
     chrome.alarms.get(AlarmId, function (alarm) {
-        console.log(alarm);
+
         if (alarm) {
+            // console.log("Alarm Exists");
+            console.log(alarm);
             var t = moment(alarm.scheduledTime);
-            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:SS"));
+            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
             if (t.isBefore(moment())) {
                 chrome.alarms.clear(AlarmId)
                 chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
@@ -36,32 +38,19 @@ function updateBrowserAction(AlarmId) {
             }
 
         } else {
+            // console.log("Alarm does not exist");
             console.log("Setting alarm - periodInMinutes: " + options.AlarmInterval);
             chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
+            updateBrowserAction(AlarmId);
         }
     });
 }
 
-// var AlarmId = uuidv4();
 
 chrome.runtime.onStartup.addListener(function () {
-    chrome.storage.sync.get(AppOptions, function (items) {
-        // console.log(AppOptions);
-        // console.log(items);
-        if (items[AppOptions]) {
-            if (items[AppOptions].AlarmInterval) {
-                // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-                options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
-                console.log("Setting custom alarm interval: " + options.AlarmInterval);
-                // console.log(typeof (options.AlarmInterval));
-            }
-        }
-        else {
-            console.log("No custom alarm interval set.");
-            console.log("Default Alarm Interval: " + options.AlarmInterval);
-        }
-        updateBrowserAction(AlarmId);
-    });
+    // console.log("onStartup - Clear Alarm " + AlarmId);
+    // chrome.alarms.clear(AlarmId);
+    updateBrowserAction(AlarmId);
 });
 
 chrome.runtime.onConnect.addListener(function (port) {
@@ -223,20 +212,20 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     }
 });
 
-chrome.storage.sync.get(AppOptions, function (items) {
-    // console.log(AppOptions);
-    // console.log(items);
-    if (items[AppOptions]) {
-        if (items[AppOptions].AlarmInterval) {
-            // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-            options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
-            console.log("Setting custom alarm interval: " + options.AlarmInterval);
-            // console.log(typeof (options.AlarmInterval));
-        }
-    }
-    else {
-        console.log("No custom alarm interval set.");
-        console.log("Default Alarm Interval: " + options.AlarmInterval);
-    }
-    updateBrowserAction(AlarmId);
-});
+// chrome.storage.sync.get(AppOptions, function (items) {
+//     // console.log(AppOptions);
+//     // console.log(items);
+//     if (items[AppOptions]) {
+//         if (items[AppOptions].AlarmInterval) {
+//             // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
+//             options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
+//             console.log("Setting custom alarm interval: " + options.AlarmInterval);
+//             // console.log(typeof (options.AlarmInterval));
+//         }
+//     }
+//     else {
+//         console.log("No custom alarm interval set.");
+//         console.log("Default Alarm Interval: " + options.AlarmInterval);
+//     }
+//     updateBrowserAction(AlarmId);
+// });
