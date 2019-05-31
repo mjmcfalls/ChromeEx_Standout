@@ -1,6 +1,6 @@
 {
   "name": "Standout Daily Check-in Extension",
-  "version": "1.0",
+  "version": "1.2",
   "description": "Periodically nudges for Standout check-ins at a set interval.",
   "permissions": [
     "activeTab",
