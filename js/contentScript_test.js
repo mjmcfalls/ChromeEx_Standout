@@ -1,5 +1,6 @@
 console.log("contentScript_test.js");
-var nudgeColor = "#ecffd1ba";
+var valueColor = "#7b9bc8";
+var skillColor = "#a22024";
 var port = chrome.runtime.connect({ name: "standout" });
 
 function rafAsync() {
@@ -51,14 +52,15 @@ port.onMessage.addListener(function (msg) {
         for (i = 0; i < skillsNode.length; i++) {
             if (msg.data['avg']['skillAvg'] == parseInt(skillsNode[i].getAttribute("data-rating"))) {
                 console.log("Skill matches attribute value");
-                skillsNode[i].style.backgroundColor = nudgeColor;
+                skillsNode[i].style.borderColor = skillColor;
+                // border-bottom-color
             }
         }
 
         for (i = 0; i < valueNode.length; i++) {
             if (msg.data['avg']['valueAvg'] == parseInt(valueNode[i].getAttribute("data-rating"))) {
                 console.log("Value matches attribute value");
-                valueNode[i].style.backgroundColor = nudgeColor;
+                valueNode[i].style.borderBottomColor = valueColor;
             }
         }
 
