@@ -15,8 +15,8 @@ var AlarmId = "e5a55050-8d9f-491b-8562-57ad06091766";
 // }
 
 function updateBrowserAction(AlarmId) {
+    console.log("updateBrowserAction firing");
     chrome.alarms.get(AlarmId, function (alarm) {
-
         if (alarm) {
             // console.log("Alarm Exists");
             console.log(alarm);
@@ -71,12 +71,8 @@ chrome.runtime.onStartup.addListener(function () {
 });
 
 chrome.runtime.onConnect.addListener(function (port) {
-    // console.assert(port.name == "standout");
     var DateString;
-    // console.log(port.name);
-    // console.log(port);
     port.onMessage.addListener(function (msg) {
-        // console.log(msg);
         var DataArray = [];
         if (msg.form) {
             var data = {};
@@ -97,8 +93,6 @@ chrome.runtime.onConnect.addListener(function (port) {
                     avg = { 'skillavg': DataArray[0]['skill'], 'valueavg': DataArray[0]['value'] };
                     tempJson[DateString] = DataArray;
                     tempJson[DateString].push(avg);
-                    // console.log(tempJson);
-
 
                     chrome.storage.sync.set(tempJson, function () {
                         // console.log('Added ' + tempJson);
@@ -106,8 +100,6 @@ chrome.runtime.onConnect.addListener(function (port) {
 
                 } else {
                     // Append data to the existing day.
-                    // console.log("Appending data to existing results.");
-
                     var SkillSum = 0;
                     var ValueSum = 0;
                     var AvgIndex;
@@ -139,8 +131,6 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
 
         if (msg.options) {
-            // console.log("options");
-            // console.log(msg);
             chrome.alarms.clear(AlarmId, function (wasCleared) {
                 // console.log("Cleared alarm:" + AlarmId + " : " + wasCleared);
             });
@@ -166,19 +156,13 @@ chrome.runtime.onConnect.addListener(function (port) {
             // console.log(soSplitWeek);
             var StartOfWeek = moment(soSplitWeek[0], "DD MMM")
             var EndOfWeek = moment(soSplitWeek[1], "DD MMM")
-            // console.log("Start Of Week: " + StartOfWeek);
-            // console.log("End Of Week: " + EndOfWeek);
+
             chrome.storage.sync.get(function (result) {
-                // console.log(result);
-                // console.log(typeof result);
                 for (var key in result) {
-                    // console.log("Key: " + key);
                     var tempMoment = moment(key, "YYYYMMDD");
-                    // console.log("TempMoment: " + tempMoment.format("YYYYMMMDD"));
+
                     if (tempMoment.isBetween(StartOfWeek, EndOfWeek, null, '[]')) {
-                        // console.log(result[key]);
                         WeekArray[key] = result[key];
-                        // console.log(key + " between " + StartOfWeek.format("YYYYMMMDD") + " and " + EndOfWeek.format("YYYYMMDD"));
 
                         for (i = 0; i < result[key].length; i++) {
                             if (result[key][i]['skill'] && result[key][i]['value']) {
@@ -189,16 +173,14 @@ chrome.runtime.onConnect.addListener(function (port) {
                         }
                     }
                 }
-                // console.log("Avg: " + avg["skillAvg"] + " " + avg["valueAvg"] + " " + avg['count']);
+
                 avg['skillAvg'] = Math.round(avg['skillAvg'] / avg['count']);
                 avg['valueAvg'] = Math.round(avg['valueAvg'] / avg['count']);
-                // console.log("Avg: " + avg["skillAvg"] + " " + avg["valueAvg"] + " " + avg['count']);
-                WeekArray['avg'] = avg;
-                // console.log(WeekArray);
-                // console.log("Post back to content script");
+
+                WeekArray['avg'] = avg;;
                 var postData = {};
                 postData['data'] = WeekArray;
-                // console.log(postData);
+
                 port.postMessage(postData);
             });
 
@@ -208,11 +190,9 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
-    console.log(alarm);
+    console.log("onAlarm Firing")
     if (AlarmId == alarm.name) {
-        // console.log("Firing alarm", alarm);
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            // console.log(tabs[0]);
             if (!(tabs[0].id === undefined)) {
                 chrome.windows.create({
                     type: 'popup',
@@ -228,21 +208,3 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
 
     }
 });
-
-// chrome.storage.sync.get(AppOptions, function (items) {
-//     // console.log(AppOptions);
-//     // console.log(items);
-//     if (items[AppOptions]) {
-//         if (items[AppOptions].AlarmInterval) {
-//             // console.log("Setting custom alarm interval: " + items[AppOptions].AlarmInterval);
-//             options.AlarmInterval = parseInt(items[AppOptions].AlarmInterval, 10);
-//             console.log("Setting custom alarm interval: " + options.AlarmInterval);
-//             // console.log(typeof (options.AlarmInterval));
-//         }
-//     }
-//     else {
-//         console.log("No custom alarm interval set.");
-//         console.log("Default Alarm Interval: " + options.AlarmInterval);
-//     }
-//     updateBrowserAction(AlarmId);
-// });
