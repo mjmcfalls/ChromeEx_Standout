@@ -5,3 +5,11 @@ In the Standout dashboard, the extension will nudge the user toward the average 
 ### Known Issues
 * If Chrome is closed is during the next check-in it will automatically prompt for a checkin when Chrome is reopened.
 * One of the nudges is hard to see.  
+
+#### Screenshots
+Options page:
+![Options page](Screenshots/Options_page.png)
+Example of the check-in page:
+![Example checking page](Screenshots/Popup_screenshot.png)
+Example of the next check-in displayed as hover text:
+![Example of hover text](Screenshots/NextCheckIn-Popup.png)
