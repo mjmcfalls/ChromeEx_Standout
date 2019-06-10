@@ -22,9 +22,10 @@ function updateBrowserAction(AlarmId) {
             console.log(alarm);
             var t = moment(alarm.scheduledTime);
             console.log("updateBrowserAction - Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
-            console.log("Current time - alarm: " + t.diff(moment()));
+            console.log("Current time - alarm: " + t.diff(moment(), "m"));
             // if (t.isBefore(moment())) {
-            if (t.diff(moment()) > options.AlarmInterval * 2) {
+            if (t.diff(moment(), "m") > options.AlarmInterval * 2) {
+                console.log("Clearing stale alarm");
                 chrome.alarms.clear(AlarmId)
                 chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
                 chrome.alarms.get(AlarmId, function (alarm) {
@@ -195,7 +196,7 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
     console.log("onAlarm Firing - Scheduled time: " - alarm.scheduledTime);
     if (AlarmId == alarm.name) {
-        if (moment(alarm.scheduledTime).diff(moment()) <= options.AlarmInterval) {
+        if (moment(alarm.scheduledTime).diff(moment(), "m") <= options.AlarmInterval) {
             chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 if (!(tabs[0].id === undefined)) {
                     chrome.windows.create({
