@@ -48,7 +48,7 @@ function updateBrowserAction(AlarmId) {
 
 
 chrome.runtime.onStartup.addListener(function () {
-    // console.log("onStartup - Clear Alarm " + AlarmId);
+    console.log("onStartup - Clear Alarm " + AlarmId);
     // chrome.alarms.clear(AlarmId);
     // updateBrowserAction(AlarmId);
     chrome.storage.sync.get(AppOptions, function (items) {
