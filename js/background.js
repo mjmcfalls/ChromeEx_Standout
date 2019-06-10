@@ -21,8 +21,10 @@ function updateBrowserAction(AlarmId) {
             // console.log("Alarm Exists");
             console.log(alarm);
             var t = moment(alarm.scheduledTime);
-            console.log("Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
-            if (t.isBefore(moment())) {
+            console.log("updateBrowserAction - Next Alarm at: " + t.format("YYYY-MM-DD HH:mm:ss"));
+            console.log("Current time - alarm: " + t.diff(moment()));
+            // if (t.isBefore(moment())) {
+            if (t.diff(moment()) > options.AlarmInterval * 2) {
                 chrome.alarms.clear(AlarmId)
                 chrome.alarms.create(AlarmId, { 'periodInMinutes': options.AlarmInterval });
                 chrome.alarms.get(AlarmId, function (alarm) {
@@ -66,6 +68,7 @@ chrome.runtime.onStartup.addListener(function () {
             console.log("No custom alarm interval set.");
             console.log("Default Alarm Interval: " + options.AlarmInterval);
         }
+        console.log("OnStartup calling updateBrowserAction");
         updateBrowserAction(AlarmId);
     });
 });
@@ -206,6 +209,7 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
             });
         }
         // Update Browser action with next alarm time.
+        console.log("onAlarm calling updateBrowserAction");
         updateBrowserAction(AlarmId);
     }
 });
