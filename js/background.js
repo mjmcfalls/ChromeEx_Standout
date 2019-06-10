@@ -190,21 +190,22 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
-    console.log("onAlarm Firing")
+    console.log("onAlarm Firing - Scheduled time: " - alarm.scheduledTime);
     if (AlarmId == alarm.name) {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            if (!(tabs[0].id === undefined)) {
-                chrome.windows.create({
-                    type: 'popup',
-                    url: 'popup.html',
-                    width: 500,
-                    height: 650,
-                    focused: false
-                });
-            }
-        });
+        if (moment(alarm.scheduledTime).diff(moment()) <= options.AlarmInterval) {
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                if (!(tabs[0].id === undefined)) {
+                    chrome.windows.create({
+                        type: 'popup',
+                        url: 'popup.html',
+                        width: 500,
+                        height: 650,
+                        focused: false
+                    });
+                }
+            });
+        }
         // Update Browser action with next alarm time.
         updateBrowserAction(AlarmId);
-
     }
 });
