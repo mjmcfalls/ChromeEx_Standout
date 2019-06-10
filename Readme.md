@@ -1,5 +1,6 @@
-### Chrome Extension for Standout.
+### Chrome Extension for Standout
 This extension periodically prompts for a checkin during regular intervals through the day.  
+
 In the Standout dashboard, the extension will nudge the user toward the average values inputted during the week; any loved/loathed text entered will be automatically inserted into the appropriate text fields during the check-in with a date stamp.
 
 ### Known Issues
@@ -9,7 +10,9 @@ In the Standout dashboard, the extension will nudge the user toward the average 
 #### Screenshots
 Options page:
 ![Options page](Screenshots/Options_page.png)
+
 Example of the check-in page:
 ![Example checking page](Screenshots/Popup_screenshot.png)
+
 Example of the next check-in displayed as hover text:
 ![Example of hover text](Screenshots/NextCheckIn-Popup.png)
