@@ -8,11 +8,15 @@ In the Standout dashboard, the extension will nudge the user toward the average 
 * One of the nudges is hard to see.  
 
 #### Screenshots
-Options page:
-![Options page](Screenshots/Options_page.png)
 
 Example of the check-in page:
 ![Example checking page](Screenshots/Popup_screenshot.png)
 
 Example of the next check-in displayed as hover text:
+
 ![Example of hover text](Screenshots/NextCheckIn-Popup.png)
+
+Options page:
+
+![Options page](Screenshots/Options_page.png)
+
