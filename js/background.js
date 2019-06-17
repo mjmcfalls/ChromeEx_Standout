@@ -194,7 +194,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
-    console.log("onAlarm Firing - Scheduled time: " - alarm.scheduledTime);
+    console.log("onAlarm Firing - Scheduled time: " + alarm.scheduledTime);
     if (AlarmId == alarm.name) {
         console.log("Alarm matches - " + alarm.name)
         if (!isNaN(alarm.scheduledTime)) {
