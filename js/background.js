@@ -196,18 +196,21 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     // Check if existing alarm matches current alarm; if so fire popup.
     console.log("onAlarm Firing - Scheduled time: " - alarm.scheduledTime);
     if (AlarmId == alarm.name) {
-        if (moment(alarm.scheduledTime).diff(moment(), "m") <= options.AlarmInterval) {
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                if (!(tabs[0].id === undefined)) {
-                    chrome.windows.create({
-                        type: 'popup',
-                        url: 'popup.html',
-                        width: 500,
-                        height: 650,
-                        focused: false
-                    });
-                }
-            });
+        console.log("Alarm matches - " + alarm.name)
+        if (!isNaN(alarm.scheduledTime)) {
+            if (moment(alarm.scheduledTime).diff(moment(), "m") <= options.AlarmInterval) {
+                chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                    if (!(tabs[0].id === undefined)) {
+                        chrome.windows.create({
+                            type: 'popup',
+                            url: 'popup.html',
+                            width: 500,
+                            height: 650,
+                            focused: false
+                        });
+                    }
+                });
+            }
         }
         // Update Browser action with next alarm time.
         console.log("onAlarm calling updateBrowserAction");
